@@ -2,10 +2,12 @@
 /*
 Math particular to a game.
 */
-
-typedef position_struct Position;
+#ifndef GAME_MATH_HEADER
+#define GAME_MATH_HEADER
+typedef struct position_struct Position;
 struct position_struct{
-    float x = 0;
-    float y = 0;
-    float z = 0;
+    int x;
+    int y;
+    int z;
 };
+#endif
