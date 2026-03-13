@@ -4,7 +4,7 @@
 void init_screen(int width, int height, int*** screen){
     for(int i = 0; i < width; i++){
         for(int j = 0; j < height; j++){
-            (*screen)[i][j] = '#';
+            (*screen)[i][j] = '-';
         }
     }
 }

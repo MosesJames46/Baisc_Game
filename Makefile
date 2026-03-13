@@ -6,16 +6,23 @@
 #The above simply means that each target has a prerequistie condition that must be met
 #in order for the target to be done. The revipe is how these prerequisites are done.
 
-objects = console_control.o game_math.o game_utility.o
+#should also list variables in the order that the prerequisites needs them.
+
+objects = main.o console_control.o game_utility.o
 CC = gcc
 headers = /header_files
 
 main : $(objects)
 		gcc -o main $(objects)
 
+main.o : main.c header_files/console_control.h
+			gcc -c main.c
 
-console_control.o : stdio.h
-					CC source_files/game_utility.c
+console_control.o : source_files/console_control.c header_files/console_control.h 
+					gcc -c source_files/console_control.c
+	
+game_utility.o : source_files/game_utility.c header_files/game_utility.h
+					gcc -c source_files/game_utility.c
 
 clean : 
 		rm main $(objects)
