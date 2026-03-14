@@ -1,5 +1,6 @@
 #include "header_files/console_control.h"
 #include "header_files/game_utility.h"
+#include "header_files/game_math.h"
 #include <stdio.h>
 /*
 https://github.com/MosesJames46/Baisc_Game
@@ -15,5 +16,7 @@ int main(void){
     init_screen(console.width, console.height, &console.screen);
     print_to_screen(console.width, console.height, &console.screen);
 
+    Point point_a = {3, 4, 5};
+    print_point(point_a);
     return 0;
 }
