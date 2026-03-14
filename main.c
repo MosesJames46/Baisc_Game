@@ -9,14 +9,27 @@ First time using make:
 */
 
 int main(void){
-    struct console_struct console;
-    console.width = 36;
-    console.height = 36;
-    allocate_2Darray(console.width, console.height, &console.screen);
-    init_screen(console.width, console.height, &console.screen);
-    print_to_screen(console.width, console.height, &console.screen);
+    //struct console_struct console;
+    //console.width = 36;
+    //console.height = 36;
+    //allocate_2Darray(console.width, console.height, &console.screen);
+    //init_screen(console.width, console.height, &console.screen);
+    //print_to_screen(console.width, console.height, &console.screen);
 
-    Point point_a = {3, 4, 5};
-    print_point(point_a);
+    Point p = {50.00, -20.0, 10.0};
+    Point v = {206.54, 499.232, -2392.2};
+
+    Point k = point_addition(p, v);
+    print_point(k);
+    print_newline();
+
+    k = point_subtracition(k, p);
+    print_point(k);
+    print_newline();
+    
+    k = negate_point(k);
+    print_point(k);
+    print_newline();
+
     return 0;
 }

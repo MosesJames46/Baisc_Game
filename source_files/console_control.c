@@ -17,3 +17,7 @@ void print_to_screen(int width, int height, int*** screen){
         printf("\n");
     }
 }
+
+void print_newline(){
+    printf("\n");
+}

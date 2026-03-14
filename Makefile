@@ -13,7 +13,7 @@ CC = gcc
 headers = /header_files
 
 main : $(objects)
-		gcc -o main $(objects)
+		gcc -o main $(objects) -lm
 
 main.o : main.c header_files/console_control.h header_files/game_math.h
 			gcc -c main.c
