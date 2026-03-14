@@ -26,8 +26,14 @@ int main(void){
     k = point_subtracition(k, p);
     print_point(k);
     print_newline();
-    
+
     k = negate_point(k);
+    print_point(k);
+    print_newline();
+
+    k = mid_point(k, p);
+    print_point(p);
+    print_newline();
     print_point(k);
     print_newline();
 

@@ -36,3 +36,24 @@ Point negate_point(Point point){
 void print_point(Point point){
     printf("{%lf, %lf, %lf}.", point.x, point.y, point.z);
 }
+
+Point point_multiplication(Point point, double scalar){
+    Point c = point;
+    c.x *= scalar;
+    c.y *= scalar;
+    c.z *= scalar;
+    return c;
+}
+Point point_division(Point point, double scalar){
+    Point c = point;
+    c.x /= scalar;
+    c.y /= scalar;
+    c.z /= scalar;
+    return c;
+}
+
+Point mid_point(Point A, Point B){
+    Point c = point_addition(A, B);
+    c = point_division(c, 2.0f);
+    return c;
+}

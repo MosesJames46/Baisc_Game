@@ -20,6 +20,13 @@ Point point_addition(Point A, Point B);
 Point point_subtracition(Point A, Point B);
 Point negate_point(Point point);
 
+Point point_multiplication(Point point, double scalar);
+Point point_division(Point point, double scalar);
+
+Point mid_point(Point A, Point B);
+
+
+
 void print_point(Point Point);
 
 #endif
