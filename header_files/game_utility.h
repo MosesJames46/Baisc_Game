@@ -14,6 +14,6 @@ int deallocate_2Darray(float** pointer_to_array, int width, int height);
 void allocate_1Darray(float** pointer_to_array, int size);
 void deallocate_1Darray(float* ponter_to_array);
 
-void input_2Darray(float*** array, int width, int height);
-
+void input_array(float*** array, int width, int height);
+void output_array(float*** array, int width, int height);
 #endif

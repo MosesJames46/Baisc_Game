@@ -58,3 +58,24 @@ void allocate_1Darray(float** pointer_to_array, int size){
 void deallocate_1Darray(float* pointer_to_array){
     free(pointer_to_array);
 }
+
+void input_array(float*** array, int width, int height){
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            printf("Insert value into [%d, %d]. ", i, j);
+            scanf("%f", &(*array)[i][j]);
+        }
+    }
+}
+
+/*
+    Because array subscription has higher precedence, enclose the pointer in () to perform indirection: printf("%f ", (*array)[i][j]);
+*/
+void output_array(float*** array, int width, int height){
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            printf("%f ", (*array)[i][j]);
+        }
+        printf("\n");
+    }
+}
