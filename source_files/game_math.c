@@ -18,33 +18,33 @@ double square_magnitude(Point point){
     return point.x * point.x + point.y * point.y + point.z * point.z;
 }
 
-Point point_addition(Point A, Point B){
+Point point_add(Point A, Point B){
     Point C = {A.x + B.x, A.y + B.y, A.z + B.z};
     return C;
 }
 
-Point point_subtracition(Point A, Point B){
+Point point_sub(Point A, Point B){
     Point C = {A.x - B.x, A.y - B.y, A.z - B.z};
     return C;
 }
 
-Point negate_point(Point point){
+Point point_neg(Point point){
     Point negated_point = {-point.x, -point.y, -point.z};
     return negated_point;
 }
 
-void print_point(Point point){
+void point_print(Point point){
     printf("{%lf, %lf, %lf}.", point.x, point.y, point.z);
 }
 
-Point point_multiplication(Point point, double scalar){
+Point point_mul(Point point, double scalar){
     Point c = point;
     c.x *= scalar;
     c.y *= scalar;
     c.z *= scalar;
     return c;
 }
-Point point_division(Point point, double scalar){
+Point point_div(Point point, double scalar){
     Point c = point;
     c.x /= scalar;
     c.y /= scalar;
@@ -52,8 +52,8 @@ Point point_division(Point point, double scalar){
     return c;
 }
 
-Point mid_point(Point A, Point B){
-    Point c = point_addition(A, B);
-    c = point_division(c, 2.0f);
+Point point_mid(Point A, Point B){
+    Point c = point_add(A, B);
+    c = point_div(c, 2.0f);
     return c;
 }

@@ -16,14 +16,14 @@ Point distance(Point a, Point b);
 double magnitude(Point point);
 double square_magnitude(Point point);
 
-Point point_addition(Point A, Point B);
-Point point_subtracition(Point A, Point B);
-Point negate_point(Point point);
+Point point_add(Point A, Point B);
+Point point_sub(Point A, Point B);
+Point point_neg(Point point);
 
-Point point_multiplication(Point point, double scalar);
-Point point_division(Point point, double scalar);
+Point point_mul(Point point, double scalar);
+Point point_div(Point point, double scalar);
 
-Point mid_point(Point A, Point B);
+Point point_mid(Point A, Point B);
 
 
 
