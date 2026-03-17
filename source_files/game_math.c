@@ -1,4 +1,5 @@
 #include "../header_files/game_math.h"
+#include "../header_files/game_math_utility.h"
 #include <stdio.h>
 #include <math.h>
 

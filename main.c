@@ -18,9 +18,21 @@ int main(void){
     //print_to_screen(console.width, console.height, &console.screen);
     
     Matrix2x2 A;
-    init_mat(&A.m, 2, 2);
-    input_array(&A.m, 2, 2);
-    output_array(&A.m, 2, 2);
-    destroy_mat(A.m, 2, 2);
+    Matrix2x2 B;
+    Matrix2x2 C;
+
+    //init_mat(&A.m, 2, 2);
+    //input_array(&A.m, 2, 2);
+
+    //init_mat(&B.m, 2, 2);
+    //input_array(&B.m, 2, 2);
+
+    //init_mat(&C.m, 2, 2);
+    //C = Mat2x2_mul(A, B);
+    //output_array(&C.m, 2, 2);
+    //destroy_mat(A.m, 2, 2);
+    //destroy_mat(B.m, 2, 2);
+    char* int_string = to_stringf(-3493.54f);
+    printf("%s\n", int_string);
     return 0;
 }
