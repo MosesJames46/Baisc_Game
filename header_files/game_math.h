@@ -13,7 +13,7 @@ struct Vec3_struct{
 
 typedef struct Matrix2x2_Struct Matrix2x2;
 struct Matrix2x2_Struct{
-    float** m;
+    float m[2][2];
 };
 
 Vec3 distance(Vec3 u, Vec3 v);
@@ -35,6 +35,5 @@ void print_point(Vec3 u);
 Matrix2x2 Mat2x2_mul(Matrix2x2 A, Matrix2x2 B);
 float Mat2x2_det(Matrix2x2 A);
 float Mat2x2_trace(Matrix2x2 A);
-
 
 #endif
