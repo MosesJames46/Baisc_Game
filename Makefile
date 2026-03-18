@@ -18,7 +18,8 @@ main : $(objects)
 main.o : main.c header_files/console_control.h header_files/game_math.h header_files/game_math_utility.h 
 			gcc -c main.c
 
-console_control.o : source_files/console_control.c header_files/console_control.h 
+console_control.o : source_files/console_control.c header_files/console_control.h \
+					header_files/game_utility.h header_files/string_functionality.h
 					gcc -c source_files/console_control.c
 	
 game_utility.o : source_files/game_utility.c header_files/game_utility.h

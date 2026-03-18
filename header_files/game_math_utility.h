@@ -23,7 +23,7 @@ struct Matrix_Descriptor_Struct{
 
 
 void init_mat(float*** mat, int width, int height);
-void destroy_mat(float*** mat, int width, int height);
+void destroy_mat(float** mat, int width, int height);
 
 void set_layout();
 

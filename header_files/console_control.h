@@ -51,5 +51,6 @@ struct console_struct{
 //const char* clear_display = "\e[1:1H\e[2J";
 void init_screen(int width, int height, int*** screen);
 void print_to_screen(int width, int height, int*** screen);
+void print_2Darray(int row, int col, float*** screen);
 void print_newline();
 #endif

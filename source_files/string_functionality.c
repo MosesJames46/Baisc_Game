@@ -98,7 +98,7 @@ char* to_stringf(float input){
     //Used to ensure that no more than n amount of zeros can be within float consecutively
     int max_zeros = 4;
     int consecutive_zeros = 0;
-
+    printf("temp float: %f.\n", temp_float);
     //Epsilon to count for smallest value.
     float epsilon = .000001f;
     while (max_decimal_places > 0 && temp_float >= epsilon){
