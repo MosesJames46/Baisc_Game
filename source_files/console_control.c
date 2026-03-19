@@ -49,64 +49,121 @@ void print_2Darray(int row, int col, float*** screen){
     //Convert each value in the array to a string. Might be able to place this inside
     //the for loop above
     char* string_array[row * col];
-    for (int i = 0; i < row * col; i++) string_array[i] = to_stringf(float_array[i]);
+    for (int i = 0; i < row * col; i++){
+        string_array[i] = to_stringf(float_array[i]);
+        printf("%s\n", string_array[i]);
+    } 
 
 
     //Count the size of each string in the char* array
-    int largest_row = 0;
+    int column_length = 0;
     int total_size_of_floats = 0;
     for(int i = 0; i < row * col; i++){
         char* temp = string_array[i];
         int j = 0;
-        while(temp[j] != '\n'){
+        while(temp[j] != '\0'){
             total_size_of_floats++;
-            printf("Currently output_float: %d.\n", total_size_of_floats);
+            //printf("Currently output_float: %d.\n", total_size_of_floats);
+            j++;
         }
-        //Obtain the largest row by testing against current size of row.
-        if (i % row == 0){
-            if (largest_row < total_size_of_floats){
-                largest_row = total_size_of_floats;
+        //The size of a row, is determined by the number of digits.
+        //Using the largest row size, we can have a base size of our matirx.
+
+        /*
+            Only when we would go to a new row should we test the size of a row.
+            This is the i % row expression.
+        */
+       int n = i + 1;
+        if (n % col == 0){
+            if (column_length < total_size_of_floats){
+                column_length = total_size_of_floats;
                 total_size_of_floats = 0;
             }
         }
     }
     //We can increase the largest row by 2 because we need to account for the borders.
-    largest_row += 2;
+    column_length += 2;
+    //Number of spaces are calculated by n x m. Spaces only go where
+    //there are no edges and inbetween numbers. These spaces will always be
+    // (n x m) - m since we are taking into account for lack of column at end.
+    int number_of_spaces = col - 1;
+    column_length += number_of_spaces;
+    printf("Column length: %d\n", column_length);
+    printf("Number of spaces: %d\n", number_of_spaces);
 
     /*
         When placing chars into the string, we need to know when we are on
-        the edges of the array and when we come across any padding.
+        the edges of the array.
+        An edge can be the following: 
+            - i % n == 0 || i % n == 1. This is assuming we are NOT using 
+            zero based indexing.
+        A top/bottom edge should be:
+            - i / column_length == 0 is top
+            - i / column_length == (row - 1) is bottom
         If we are on an edge place a border, if we are on a padding, place
         a border, else place a pound.
     */
 
     //Make sure there is a counter for current string to input into border.
     int current_string = 0;
-    for (int i = 0 ; i < largest_row; i++, current_string++){
-         if (i / (largest_row - 1) == 0 || i / (largest_row - 1) == 1){
-            border[i] ='-';
-         }else if(i % (largest_row - 1) == 0){
-            border[i] = '|';
+    int dimenson_of_border = column_length * char_row;
+    for (int i = 0; i < dimenson_of_border; i++){
+        int n = i + 1;
+        int edge = n % column_length;
+        int bottom_edge = char_row - 1;
+        int pipe = n / column_length;
+        if (edge == 0 || edge == 1){
+            border[i] ='|';
+         }else if(pipe == 0 || pipe == bottom_edge){
+            border[i] = '-';
          }else{
-            char* string = string_array[current_string];
-            int index = 0;
-            //Place the string into the array.
-            while(string[index] != '\n'){
-                border[i] = string[index];
-                i++;
-                index++;
-            }
+            border[i] = '#';
          }
     }
-
+    //Output char array. Make sure to output new line based on largest row value.
+    //New rows should be printed based on i % column_length
 
     /*
-        Based on padding size, fill in the input values for the array. 
+        The problem with using modulous on i is tha
     */
-    
-    for(int i = 0; i < largest_row; i++){
+   //printf("Here\n");
+
+   /*
+    Go back through char array and input strings.
+   */
+    int beginning_row = column_length;
+    int string_index = 0;
+    int column_entries = col;
+    for (int i = beginning_row; i < (column_length * (char_row - 1)); i++){
+        int n = i + 1;
+        int edge = n % column_length;
+        if (column_entries == 0){
+            while(border[i] == '#'){
+                printf("%c", border[i]);
+                i++;
+            }
+            printf("\n");
+            column_entries = 2;
+        }else if(edge != 1 && edge != 0 && string_index < row * col){
+            char* temp_string = string_array[string_index];
+            int string_size = size_of_string(temp_string);
+            int j;
+            for (j = 0; j < string_size; j++){
+                border[i + j] = temp_string[j];
+            }
+            column_entries--;
+            i += j;
+            string_index++;
+        }
+    }
+
+    for (int i = 0; i < column_length * char_row; i++){
+        if (border[i] == '#') border[i] = ' ';
+    }
+
+    for(int i = 0; i < column_length * char_row; i++){
         printf("%c", border[i]);
-        if (i != 0 && i % (largest_row - 1) == 0) print_newline();
+        if ((i + 1) % (column_length) == 0) print_newline();
     }
     
 }

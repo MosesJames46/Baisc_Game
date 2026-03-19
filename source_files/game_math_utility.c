@@ -4,7 +4,7 @@
 
 void init_mat(float*** mat, int width, int height){
     *mat = malloc(sizeof(float*) * height);
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < height; i++){
         (*mat)[i] = malloc(sizeof(float) * width);
     }
 }

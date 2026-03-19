@@ -35,7 +35,8 @@ int main(void){
     //destroy_mat(A.m, 2, 2);
     //destroy_mat(B.m, 2, 2);
     
-
+    //char* string = to_stringf(-.2);
+    //printf("%s\n", string);
     
 
     return 0;

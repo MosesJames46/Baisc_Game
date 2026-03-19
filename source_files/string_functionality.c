@@ -72,7 +72,7 @@ char* to_stringf(float input){
         size++;
     }
 
-    //Because temp_int is currently 0, make it cut of the decimal portion of input again.
+    //Because temp_int is currently 0, make it cut off the decimal portion of input again.
     temp_int = input;
     
     //Consider the sign of the input float.
@@ -94,21 +94,22 @@ char* to_stringf(float input){
     float temp_float = input - temp_int;
     //Negate temp_float to get positive temp_float if negative
     if (temp_float < 0) temp_float = -temp_float;
-    printf("temp float: %f.\n", temp_float);
+    //printf("temp float: %f.\n", temp_float);
     //Used to ensure that no more than n amount of zeros can be within float consecutively
     int max_zeros = 4;
     int consecutive_zeros = 0;
-    printf("temp float: %f.\n", temp_float);
+    //printf("temp float: %f.\n", temp_float);
     //Epsilon to count for smallest value.
     float epsilon = .000001f;
     while (max_decimal_places > 0 && temp_float >= epsilon){
+        
         float_to_int_result *= 10;
         temp_float *= 10;
 
         //Obtain the integer digit from the float through c float to integer conversion.
         int obtained_int_value = temp_float;
         float_to_int_result += obtained_int_value;
-        printf("Float result: %d.\n", float_to_int_result);
+        //printf("Float result: %d.\n", float_to_int_result);
         if (float_to_int_result % 10 == 0){
             consecutive_zeros++;
         }else{
@@ -117,6 +118,7 @@ char* to_stringf(float input){
 
         if (consecutive_zeros == max_zeros) break;
         
+        //Remove integer from temp_float
         temp_float -= obtained_int_value;
         max_decimal_places--;
         float_digit_counter++;
@@ -124,7 +126,7 @@ char* to_stringf(float input){
     }
 
     //Remove trailing zeros.
-    while (float_to_int_result % 10 == 0){
+    while (float_to_int_result % 10 == 0 && float_to_int_result != 0){
         float_to_int_result /= 10;
         size--;
     }
@@ -135,6 +137,7 @@ char* to_stringf(float input){
     char* int_string = to_stringi(temp_int);
     char* float_string = to_stringi(float_to_int_result);
     //printf("%d.\n", float_to_int_result);
+    //printf("%s\n", int_string);
     //printf("%s.\n", float_string);
     //Because of decimal increase.
     if (float_to_int_result > 0) size++;
@@ -167,7 +170,11 @@ char* to_stringf(float input){
     int float_index = 0;
     if(count > 0){
         //This is done because we need to skip over the decimal since the int_index stops one before it.
-        int_index += 2;
+        if (sign < 0){
+            int_index += 2;
+        }else{
+            int_index++;
+        }
         while(count > 0){
         //Use index again, sinze it stays unchange if it's 0 or 1 respectively, as an offset for the float_string.
         //Start at the int_index value. If there is a decimal, skip it. 
@@ -196,4 +203,12 @@ void swap_char(char* a, char* b){
     char temp = *a;
     *a = *b;
     *b = temp;
+}
+
+int size_of_string(char* a){
+    int size = 0;
+    while (a[size] != '\0'){
+        size++;
+    }
+    return size;
 }
