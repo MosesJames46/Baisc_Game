@@ -100,6 +100,9 @@ char* to_stringf(float input){
     int consecutive_zeros = 0;
     //printf("temp float: %f.\n", temp_float);
     //Epsilon to count for smallest value.
+    int leading_zeros = leading_zerosf(temp_float) - 1;
+    float_digit_counter += leading_zeros;
+
     float epsilon = .000001f;
     while (max_decimal_places > 0 && temp_float >= epsilon){
         
@@ -141,6 +144,7 @@ char* to_stringf(float input){
     //printf("%s.\n", float_string);
     //Because of decimal increase.
     if (float_to_int_result > 0) size++;
+    size += leading_zeros;
 
     char* output_string = new_string(size);
     int index = 0;
@@ -158,29 +162,34 @@ char* to_stringf(float input){
 
     //Copy proper values into new string.
     int count = int_digit_count;
-    int int_index = 0;
+    int int_index = index;
     while(count > 0){
-        output_string[index + int_index] = int_string[index + int_index];
+        output_string[index] = int_string[index + int_index];
         int_index++;
         count--;
     }
-
+    //Update index to track current position in output string
+    index = int_index;
     
     count = float_digit_counter;
     int float_index = 0;
     if(count > 0){
         //This is done because we need to skip over the decimal since the int_index stops one before it.
         if (sign < 0){
-            int_index += 2;
+            index += 2;
         }else{
-            int_index++;
+            index++;
+        }
+        while (leading_zeros > 0){
+                output_string[index] = '0';
+                leading_zeros--;
+                index++;
+                count--;
         }
         while(count > 0){
-        //Use index again, sinze it stays unchange if it's 0 or 1 respectively, as an offset for the float_string.
-        //Start at the int_index value. If there is a decimal, skip it. 
-        output_string[int_index + float_index] = float_string[index + float_index];
-        float_index++;
-        count--;
+            output_string[index + float_index] = float_string[float_index];
+            float_index++;
+            count--;
         }
     }
     free(int_string);
@@ -211,4 +220,15 @@ int size_of_string(char* a){
         size++;
     }
     return size;
+}
+
+int leading_zerosf(float input){
+    int count = 0;
+    int temp = 0;
+    while(input != 0 && temp == 0 && count < 8){
+        temp = (input *= 10);
+        count++;
+    }
+    printf("Leading zeros: %d\n", count);
+    return count;
 }

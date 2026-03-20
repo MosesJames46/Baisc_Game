@@ -6,6 +6,7 @@ char* to_stringf(float input);
 char* new_string(int size);
 void swap_char(char* a, char* b);
 int size_of_string(char* a);
+int leading_zerosf(float input);
 
 
 #endif
