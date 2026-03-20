@@ -10,5 +10,5 @@ int leading_zerosf(float input);
 
 static int digits_in_integer(int input);
 static int float_to_int(float float_input, int max_zeros);
-static int remove_trailing_zeros(int);
+static int remove_trailing_zeros(int input);
 #endif

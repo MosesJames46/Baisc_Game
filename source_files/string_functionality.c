@@ -98,50 +98,33 @@ char* to_stringf(float input){
     int leading_zeros = leading_zerosf(temp_float) - 1;
     float_digit_counter += leading_zeros;
     float_to_int_result = float_to_int(temp_float, 6);
-    size += float_to_int_result;
-    float_digit_counter += float_to_int_result;
-    //float epsilon = .000001f;
-    //while (max_decimal_places > 0 && temp_float >= epsilon){
-    //    
-    //    float_to_int_result *= 10;
-    //    temp_float *= 10;
-//
-    //    //Obtain the integer digit from the float through c float to integer conversion.
-    //    int obtained_int_value = temp_float;
-    //    float_to_int_result += obtained_int_value;
-    //    //printf("Float result: %d.\n", float_to_int_result);
-    //    if (float_to_int_result % 10 == 0){
-    //        consecutive_zeros++;
-    //    }else{
-    //        consecutive_zeros = 0;
-    //    }
-//
-    //    if (consecutive_zeros == max_zeros) break;
-    //    
-    //    //Remove integer from temp_float
-    //    temp_float -= obtained_int_value;
-    //    max_decimal_places--;
-    //    float_digit_counter++;
-    //    size++;
-    //}
 
-    //Remove trailing zeros.
+    //Updated size and counter from outputs.
+    size += digits_in_integer(float_to_int_result);
+    float_digit_counter += float_to_int_result;
+
     while (float_to_int_result % 10 == 0 && float_to_int_result != 0){
         float_to_int_result /= 10;
         size--;
     }
 
     float_to_int_result *= sign;
-    //Size is determined by if there is a decimal and if the sign is negative.
-    temp_int = input;
+    
+    /*    while (float_to_int_result % 10 == 0 && float_to_int_result != 0){
+        float_to_int_result /= 10;
+        size--;
+    }
+        Ensure that temp_int and float value are both positive.
+        Multiplying both by sign will only change sign if values are negative
+    */
     temp_int *= sign;
     float_to_int_result *= sign;
     char* int_string = to_stringi(temp_int);
     char* float_string = to_stringi(float_to_int_result);
-    //printf("%d.\n", float_to_int_result);
-    //printf("%s\n", int_string);
-    //printf("%s.\n", float_string);
-    //Because of decimal increase.
+
+    /*
+        If float value, then there is decimal. Increase size for decimal.
+    */
     if (float_to_int_result > 0) size++;
     size += leading_zeros;
 
@@ -236,7 +219,13 @@ int digits_in_integer(int input){
     return count;
 }
 
+/*
+    Creates an integer without any leading zeros.
+    Removes trailing zeros.
+    Ensures positive output.
+*/
 int float_to_int(float float_input, int max_zeros){
+    if (float_input < 0) float_input *= -1;
     const float epsilon = .00001f;
     int result = 0;
     while (max_zeros > 0 && float_input > epsilon){
