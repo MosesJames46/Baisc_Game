@@ -51,7 +51,7 @@ void print_2Darray(int row, int col, float*** screen){
     char* string_array[row * col];
     for (int i = 0; i < row * col; i++){
         string_array[i] = to_stringf(float_array[i]);
-        printf("%s\n", string_array[i]);
+        //printf("%s\n", string_array[i]);
     } 
 
 
@@ -66,9 +66,6 @@ void print_2Darray(int row, int col, float*** screen){
             //printf("Currently output_float: %d.\n", total_size_of_floats);
             j++;
         }
-        //The size of a row, is determined by the number of digits.
-        //Using the largest row size, we can have a base size of our matirx.
-
         /*
             Only when we would go to a new row should we test the size of a row.
             This is the i % row expression.
@@ -81,27 +78,25 @@ void print_2Darray(int row, int col, float*** screen){
             }
         }
     }
-    //We can increase the largest row by 2 because we need to account for the borders.
-    column_length += 2;
-    //Number of spaces are calculated by n x m. Spaces only go where
-    //there are no edges and inbetween numbers. These spaces will always be
-    // (n x m) - m since we are taking into account for lack of column at end.
+    /*
+        Total column_length is row_width + border_char. The number of spaces will always equal row_width - 1. This is because only the values in the n x m matrix that
+        have a value preceeding and succeeding them, can have a space char ' ' in-between these values. The first and last value of each row are excluded, making them the 
+        only values that will not have a space before/after for there corresponding locations. 
+    */
     int number_of_spaces = col - 1;
-    column_length += number_of_spaces;
+    column_length += number_of_spaces + 2;
     printf("Column length: %d\n", column_length);
     printf("Number of spaces: %d\n", number_of_spaces);
 
     /*
         When placing chars into the string, we need to know when we are on
         the edges of the array.
-        An edge can be the following: 
-            - i % n == 0 || i % n == 1. This is assuming we are NOT using 
-            zero based indexing.
+        Edge definition: 
+            - Let i be index. Then n = i + 1. Then edge = n % column. If edge == 0 or edge == 1 then we are on edge. 
         A top/bottom edge should be:
-            - i / column_length == 0 is top
-            - i / column_length == (row - 1) is bottom
-        If we are on an edge place a border, if we are on a padding, place
-        a border, else place a pound.
+            - edge = i / row_width. If edge == 0 || edge == number_of_rows, then we are on edge.
+
+        If we are on an edge place the appropriate border char.
     */
 
     //Make sure there is a counter for current string to input into border.
@@ -120,13 +115,6 @@ void print_2Darray(int row, int col, float*** screen){
             border[i] = '#';
          }
     }
-    //Output char array. Make sure to output new line based on largest row value.
-    //New rows should be printed based on i % column_length
-
-    /*
-        The problem with using modulous on i is tha
-    */
-   //printf("Here\n");
 
    /*
     Go back through char array and input strings.
@@ -139,11 +127,11 @@ void print_2Darray(int row, int col, float*** screen){
         int edge = n % column_length;
         if (column_entries == 0){
             while(border[i] == '#'){
-                printf("%c", border[i]);
+                //printf("%c", border[i]);
                 i++;
             }
-            printf("\n");
-            column_entries = 2;
+            //printf("\n");
+            column_entries = col;
         }else if(edge != 1 && edge != 0 && string_index < row * col){
             char* temp_string = string_array[string_index];
             int string_size = size_of_string(temp_string);

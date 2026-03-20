@@ -26,18 +26,5 @@ int main(void){
     print_2Darray(2, 2, &A.m);
     destroy_mat(A.m, 2, 2);
 
-    //init_mat(&B.m, 2, 2);
-    //input_array(&B.m, 2, 2);
-
-    //init_mat(&C.m, 2, 2);
-    //C = Mat2x2_mul(A, B);
-    //output_array(&C.m, 2, 2);
-    //destroy_mat(A.m, 2, 2);
-    //destroy_mat(B.m, 2, 2);
-    
-    //char* string = to_stringf(-.2);
-    //printf("%s\n", string);
-    
-
     return 0;
 }
