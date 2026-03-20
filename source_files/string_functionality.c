@@ -137,6 +137,8 @@ char* to_stringf(float input){
     float_to_int_result *= sign;
     //Size is determined by if there is a decimal and if the sign is negative.
     temp_int = input;
+    temp_int *= sign;
+    float_to_int_result *= sign;
     char* int_string = to_stringi(temp_int);
     char* float_string = to_stringi(float_to_int_result);
     //printf("%d.\n", float_to_int_result);
@@ -162,24 +164,20 @@ char* to_stringf(float input){
 
     //Copy proper values into new string.
     int count = int_digit_count;
-    int int_index = index;
+    int int_index = 0;
     while(count > 0){
-        output_string[index] = int_string[index + int_index];
+        output_string[index + int_index] = int_string[int_index];
         int_index++;
         count--;
     }
     //Update index to track current position in output string
-    index = int_index;
+    index += int_index;
     
     count = float_digit_counter;
     int float_index = 0;
     if(count > 0){
         //This is done because we need to skip over the decimal since the int_index stops one before it.
-        if (sign < 0){
-            index += 2;
-        }else{
-            index++;
-        }
+        index++;
         while (leading_zeros > 0){
                 output_string[index] = '0';
                 leading_zeros--;
