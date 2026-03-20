@@ -55,7 +55,9 @@ void print_2Darray(int row, int col, float*** screen){
     } 
 
 
-    //Count the size of each string in the char* array
+    /*
+        Count the size of total entries for each row. Largest row is going to be of base column_width.
+    */
     int column_length = 0;
     int total_size_of_floats = 0;
     for(int i = 0; i < row * col; i++){
@@ -63,7 +65,7 @@ void print_2Darray(int row, int col, float*** screen){
         int j = 0;
         while(temp[j] != '\0'){
             total_size_of_floats++;
-            //printf("Currently output_float: %d.\n", total_size_of_floats);
+
             j++;
         }
         /*
@@ -102,14 +104,16 @@ void print_2Darray(int row, int col, float*** screen){
     //Make sure there is a counter for current string to input into border.
     int current_string = 0;
     int dimenson_of_border = column_length * char_row;
+    int edge;
+    int n;
     for (int i = 0; i < dimenson_of_border; i++){
-        int n = i + 1;
-        int edge = n % column_length;
+        n = i + 1;
+        edge = n % column_length;
         int bottom_edge = char_row - 1;
-        int pipe = n / column_length;
+        int border_dash = n / column_length;
         if (edge == 0 || edge == 1){
             border[i] ='|';
-         }else if(pipe == 0 || pipe == bottom_edge){
+         }else if(border_dash == 0 || border_dash == bottom_edge){
             border[i] = '-';
          }else{
             border[i] = '#';
@@ -119,12 +123,19 @@ void print_2Darray(int row, int col, float*** screen){
    /*
     Go back through char array and input strings.
    */
-    int beginning_row = column_length;
+    
     int string_index = 0;
     int column_entries = col;
-    for (int i = beginning_row; i < (column_length * (char_row - 1)); i++){
-        int n = i + 1;
-        int edge = n % column_length;
+    /*
+        We want to skip the first row and the last row entriely. We can accomplish so by doing the following:
+        2nd row = column_width.
+        2nd to last row = column_width * (number_of_rows - 1).
+    */
+    int row_two = column_length;
+    int row_before_last = column_length * (char_row - 1);
+    for (int i = row_two; i < row_before_last; i++){
+        n = i + 1;
+        edge = n % column_length;
         if (column_entries == 0){
             while(border[i] == '#'){
                 //printf("%c", border[i]);
@@ -145,6 +156,9 @@ void print_2Darray(int row, int col, float*** screen){
         }
     }
 
+    /*
+        Go back into the array and any '#' chars, replace with a space.
+    */
     for (int i = 0; i < column_length * char_row; i++){
         if (border[i] == '#') border[i] = ' ';
     }
