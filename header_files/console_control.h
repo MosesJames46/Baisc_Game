@@ -53,4 +53,5 @@ void init_screen(int width, int height, int*** screen);
 void print_to_screen(int width, int height, int*** screen);
 void print_2Darray(int row, int col, float*** screen);
 void print_newline();
+static int get_largest_stringf(float* float_array, int array_sze);
 #endif

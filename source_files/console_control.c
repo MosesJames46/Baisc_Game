@@ -62,11 +62,9 @@ void print_2Darray(int row, int col, float*** screen){
     int total_size_of_floats = 0;
     for(int i = 0; i < row * col; i++){
         char* temp = string_array[i];
-        int j = 0;
-        while(temp[j] != '\0'){
+        //int j = 0;
+        while(*temp++ != '\0'){
             total_size_of_floats++;
-
-            j++;
         }
         /*
             Only when we would go to a new row should we test the size of a row.
@@ -110,11 +108,12 @@ void print_2Darray(int row, int col, float*** screen){
         n = i + 1;
         edge = n % column_length;
         int bottom_edge = char_row - 1;
-        int border_dash = n / column_length;
-        if (edge == 0 || edge == 1){
-            border[i] ='|';
-         }else if(border_dash == 0 || border_dash == bottom_edge){
-            border[i] = '-';
+        int border_dash = i / column_length;
+        //border_dash == 0 || border_dash == bottom_edge
+        if (border_dash == 0 || border_dash == bottom_edge){
+            border[i] ='-';
+         }else if(edge == 0 || edge == 1){
+            border[i] = '|';
          }else{
             border[i] = '#';
          }
@@ -184,3 +183,13 @@ void input_2Darray(float*** pointer_to_array, int row, int column){
     }
 }
 
+
+int get_largest_stringf(float* float_array, int array_size){
+    int size = 0;
+    int current_string_size;
+    char* float_string;
+    for(int i = 0; i < array_size; i++){
+        float_string = to_stringf(float_array[i]);
+        current_string_size = size_of_string(float_string);
+    }
+}

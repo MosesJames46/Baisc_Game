@@ -26,5 +26,9 @@ int main(void){
     print_2Darray(2, 2, &A.m);
     destroy_mat(A.m, 2, 2);
 
+    //char* float_string = to_stringf(23.12214);
+    //int size = size_of_string(float_string);
+    //printf("%d\n", size);
+
     return 0;
 }

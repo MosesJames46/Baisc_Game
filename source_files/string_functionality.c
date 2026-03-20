@@ -207,7 +207,7 @@ void swap_char(char* a, char* b){
 
 int size_of_string(char* a){
     int size = 0;
-    while (a[size] != '\0'){
+    while (*a++ != '\0'){
         size++;
     }
     return size;
