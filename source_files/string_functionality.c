@@ -66,11 +66,8 @@ char* to_stringf(float input){
     int size = 0;
     //obtain number of digits in the integer.
     int int_digit_count = 0;
-    while (temp_int != 0){
-        int_digit_count++;
-        temp_int /= 10;
-        size++;
-    }
+    size = digits_in_integer(temp_int);
+    int_digit_count = size;
 
     //Because temp_int is currently 0, make it cut off the decimal portion of input again.
     temp_int = input;
@@ -227,6 +224,14 @@ int leading_zerosf(float input){
         temp = (input *= 10);
         count++;
     }
-    printf("Leading zeros: %d\n", count);
+    return count;
+}
+
+int digits_in_integer(int input){
+    int count = 0;
+    while (input != 0){
+        count++;
+        input /= 10;
+    }
     return count;
 }

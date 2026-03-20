@@ -8,5 +8,5 @@ void swap_char(char* a, char* b);
 int size_of_string(char* a);
 int leading_zerosf(float input);
 
-
+static int digits_in_integer(int input);
 #endif
