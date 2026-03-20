@@ -73,3 +73,7 @@ Matrix2x2 Mat2x2_mul(Matrix2x2 A, Matrix2x2 B){
 float Mat2x2_det(Matrix2x2 A){
     return (A.m[0][0] * A.m[1][1] - A.m[1][0] * A.m[0][1]);
 }
+
+float midpoint(float start, float end){
+    return (start + end) / 2;
+}

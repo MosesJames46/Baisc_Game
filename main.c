@@ -21,14 +21,17 @@ int main(void){
     Matrix2x2 B;
     Matrix2x2 C;
 
-    init_mat(&A.m, 2, 2);
-    input_array(&A.m, 2, 2);
-    print_2Darray(2, 2, &A.m);
-    destroy_mat(A.m, 2, 2);
+    //init_mat(&A.m, 2, 2);
+    //input_array(&A.m, 2, 2);
+    //print_2Darray(2, 2, &A.m);
+    //destroy_mat(A.m, 2, 2);
 
     //char* float_string = to_stringf(23.12214);
     //int size = size_of_string(float_string);
     //printf("%d\n", size);
+
+    //int mid = midpoint(0, 11);
+    //printf("Midpoint value: %d\n", mid);
 
     return 0;
 }

@@ -7,4 +7,5 @@ char* new_string(int size);
 void swap_char(char* a, char* b);
 int size_of_string(char* a);
 
+
 #endif

@@ -36,4 +36,6 @@ Matrix2x2 Mat2x2_mul(Matrix2x2 A, Matrix2x2 B);
 float Mat2x2_det(Matrix2x2 A);
 float Mat2x2_trace(Matrix2x2 A);
 
+float midpoint(float start, float end);
+
 #endif

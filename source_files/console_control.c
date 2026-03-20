@@ -1,6 +1,7 @@
 #include "../header_files/console_control.h"
 #include "../header_files/game_utility.h"
 #include "../header_files/string_functionality.h"
+#include "../header_files/game_math.h"
 #include <stdio.h>
 
 void init_screen(int row, int col, int*** screen){
@@ -56,28 +57,13 @@ void print_2Darray(int row, int col, float*** screen){
 
 
     /*
-        Count the size of total entries for each row. Largest row is going to be of base column_width.
+        Instead obtain largest string. The largest string now is how the rest of our
+        matrix string will be spaced.
     */
     int column_length = 0;
-    int total_size_of_floats = 0;
-    for(int i = 0; i < row * col; i++){
-        char* temp = string_array[i];
-        //int j = 0;
-        while(*temp++ != '\0'){
-            total_size_of_floats++;
-        }
-        /*
-            Only when we would go to a new row should we test the size of a row.
-            This is the i % row expression.
-        */
-       int n = i + 1;
-        if (n % col == 0){
-            if (column_length < total_size_of_floats){
-                column_length = total_size_of_floats;
-                total_size_of_floats = 0;
-            }
-        }
-    }
+    int largest_string = get_largest_stringf(float_array, row * col);
+    printf("The largest float string: %d\n", largest_string);
+    column_length = largest_string * col;
     /*
         Total column_length is row_width + border_char. The number of spaces will always equal row_width - 1. This is because only the values in the n x m matrix that
         have a value preceeding and succeeding them, can have a space char ' ' in-between these values. The first and last value of each row are excluded, making them the 
@@ -122,16 +108,44 @@ void print_2Darray(int row, int col, float*** screen){
    /*
     Go back through char array and input strings.
    */
-    
-    int string_index = 0;
-    int column_entries = col;
     /*
         We want to skip the first row and the last row entriely. We can accomplish so by doing the following:
         2nd row = column_width.
         2nd to last row = column_width * (number_of_rows - 1).
+
+        Next, input values from our string array into the border char.
+        We want to obtain the current entry point and based on that point, 
+        attempt to center within that entry location.
+
+        We can do so by starting in the very center of the entry.
+        In the input string, we go to the beginning of the array starting at it's
+        midpoint. We know since the entry points are all atleast the size of the 
+        largest string, then each entry string should be able to have enough space.
+        -Obtain midpoint of entry. Subtract 1. This is how many spaces to go backwards
+        starting from midpoint of entry. Insert string.
     */
+
+    /*
+        iterating through the string is tricky. We know that each entry has some 
+        constant value say k. We have 2 borders and col - 1 spaces.
+        How can it be possible to ensure that we only access entry points.
+
+        - Detect border. If not border, attempt to access entry.
+        - Obtain midpoint of entry.
+            - Using starting index, go up by lenght of entry - 1
+            to obtain the endpoint of entry space. Then insert entry begin
+            and entry end into midpoint function.
+        - Start at midpoint of entry.
+        - Obtain entry string. 
+        - Go to midpont of entry string and subtract 1. This is the distance
+        needed to start in the entry point.
+    */
+    int string_index = 0;
+    int column_entries = col;
     int row_two = column_length;
     int row_before_last = column_length * (char_row - 1);
+    //The size of our largest string affects the end point of our enrtry.
+    int entry_offset = largest_string - 1;
     for (int i = row_two; i < row_before_last; i++){
         n = i + 1;
         edge = n % column_length;
@@ -145,12 +159,24 @@ void print_2Darray(int row, int col, float*** screen){
         }else if(edge != 1 && edge != 0 && string_index < row * col){
             char* temp_string = string_array[string_index];
             int string_size = size_of_string(temp_string);
+            //Obtain the start and end position for this specific entry.
+            int entry_start = i;
+            int entry_end = i + entry_offset;
+            int entry_midpoint = midpoint(entry_start, entry_end);
+            int string_start = midpoint(1, string_size) - 1;
+
+            int entry_begin_offset = entry_midpoint - string_start;
+            //printf("entry_start: %d\n", entry_begin_offset);
+            //Fill the border string at the appropriate entry with the string.
+
             int j;
             for (j = 0; j < string_size; j++){
-                border[i + j] = temp_string[j];
+                border[entry_begin_offset + j] = temp_string[j];
             }
             column_entries--;
-            i += j;
+            //if(entry_midpoint == 0) entry_offset++;
+            //Not sure why yet, adding 1 to offset always outputs correct result.
+            i += entry_offset + 1;
             string_index++;
         }
     }
@@ -191,5 +217,21 @@ int get_largest_stringf(float* float_array, int array_size){
     for(int i = 0; i < array_size; i++){
         float_string = to_stringf(float_array[i]);
         current_string_size = size_of_string(float_string);
+        if (current_string_size > size) size = current_string_size;
     }
+    return size;
+}
+
+void fill_entries(int entry_start, int entry_offset, int string_size, char* entry_string, char* field){
+    int stirng_size = size_of_string(entry_string);
+    int entry_end = entry_start + (entry_offset - 1);
+    int entry_midpoint = midpoint(entry_start, entry_end);
+    //This should be safe because every entry is atleast the same size of the string.
+    int string_start = midpoint(1, string_size) - 1;
+    int start = entry_midpoint - string_start;
+
+    for(int i = 0; i < string_size; i++){
+        field[start + i] = entry_string[i];
+    }
+
 }
