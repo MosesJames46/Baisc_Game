@@ -69,10 +69,8 @@ char* to_stringf(float input){
     size = digits_in_integer(temp_int);
     int_digit_count = size;
 
-    //Because temp_int is currently 0, make it cut off the decimal portion of input again.
-    temp_int = input;
     
-    //Consider the sign of the input float.
+    //Obtain sign
     int sign = 1;
     if(input < 0){
         sign = -1;
@@ -99,31 +97,33 @@ char* to_stringf(float input){
     //Epsilon to count for smallest value.
     int leading_zeros = leading_zerosf(temp_float) - 1;
     float_digit_counter += leading_zeros;
-
-    float epsilon = .000001f;
-    while (max_decimal_places > 0 && temp_float >= epsilon){
-        
-        float_to_int_result *= 10;
-        temp_float *= 10;
-
-        //Obtain the integer digit from the float through c float to integer conversion.
-        int obtained_int_value = temp_float;
-        float_to_int_result += obtained_int_value;
-        //printf("Float result: %d.\n", float_to_int_result);
-        if (float_to_int_result % 10 == 0){
-            consecutive_zeros++;
-        }else{
-            consecutive_zeros = 0;
-        }
-
-        if (consecutive_zeros == max_zeros) break;
-        
-        //Remove integer from temp_float
-        temp_float -= obtained_int_value;
-        max_decimal_places--;
-        float_digit_counter++;
-        size++;
-    }
+    float_to_int_result = float_to_int(temp_float, 6);
+    size += float_to_int_result;
+    float_digit_counter += float_to_int_result;
+    //float epsilon = .000001f;
+    //while (max_decimal_places > 0 && temp_float >= epsilon){
+    //    
+    //    float_to_int_result *= 10;
+    //    temp_float *= 10;
+//
+    //    //Obtain the integer digit from the float through c float to integer conversion.
+    //    int obtained_int_value = temp_float;
+    //    float_to_int_result += obtained_int_value;
+    //    //printf("Float result: %d.\n", float_to_int_result);
+    //    if (float_to_int_result % 10 == 0){
+    //        consecutive_zeros++;
+    //    }else{
+    //        consecutive_zeros = 0;
+    //    }
+//
+    //    if (consecutive_zeros == max_zeros) break;
+    //    
+    //    //Remove integer from temp_float
+    //    temp_float -= obtained_int_value;
+    //    max_decimal_places--;
+    //    float_digit_counter++;
+    //    size++;
+    //}
 
     //Remove trailing zeros.
     while (float_to_int_result % 10 == 0 && float_to_int_result != 0){
@@ -234,4 +234,28 @@ int digits_in_integer(int input){
         input /= 10;
     }
     return count;
+}
+
+int float_to_int(float float_input, int max_zeros){
+    const float epsilon = .00001f;
+    int result = 0;
+    while (max_zeros > 0 && float_input > epsilon){
+        float_input *= 10;
+        int temp_result = float_input;
+        result *= 10;
+
+        result += temp_result;
+        float_input -= temp_result;
+
+        max_zeros--;
+    }
+
+    result = remove_trailing_zeros(result);
+}
+
+int remove_trailing_zeros(int input){
+    while (input % 10 == 0 && input != 0){
+        input /= 10;
+    }
+    return input;
 }
