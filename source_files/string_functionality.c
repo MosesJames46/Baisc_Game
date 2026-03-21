@@ -60,122 +60,9 @@ char* to_stringi(int input){
 }
 
 char* to_stringf(float input){
-    int temp_int = input;
-    
-    
-    int size = 0;
-    //obtain number of digits in the integer.
-    int int_digit_count = 0;
-    size = digits_in_integer(temp_int);
-    int_digit_count = size;
+   
+    char* output_string = create_output_string(input);
 
-    
-    //Obtain sign
-    int sign = 1;
-    if(input < 0){
-        sign = -1;
-        size++;
-    }
-
-    //[CREATE FLOAT STRING]
-    //This is used later to determine the number to count for float string later.
-    int float_digit_counter = 0;
-
-    //Count how many decimal digits there are up to a max of 7.
-    int max_decimal_places = 6;
-    int float_to_int_result = 0;
-
-    //Remove the integer from the float
-    float temp_float = input - temp_int;
-    //Negate temp_float to get positive temp_float if negative
-    if (temp_float < 0) temp_float = -temp_float;
-    //printf("temp float: %f.\n", temp_float);
-    //Used to ensure that no more than n amount of zeros can be within float consecutively
-    int max_zeros = 4;
-    //printf("temp float: %f.\n", temp_float);
-    //Epsilon to count for smallest value.
-    int leading_zeros = leading_zerosf(temp_float) - 1;
-    float_digit_counter += leading_zeros;
-    size += leading_zeros;
-    float_to_int_result = float_to_int(temp_float, 6);
-
-    
-    /*
-        Size increases based of digits in integer.
-    */
-    int num_digits_float = digits_in_integer(float_to_int_result);
-    size += num_digits_float;
-    float_digit_counter += num_digits_float;
-
-    //while (float_to_int_result % 10 == 0 && float_to_int_result != 0){
-    //    float_to_int_result /= 10;
-    //    size--;
-    //}
-
-    float_to_int_result *= sign;
-    
-    /*    while (float_to_int_result % 10 == 0 && float_to_int_result != 0){
-        float_to_int_result /= 10;
-        size--;
-    }
-        Ensure that temp_int and float value are both positive.
-        Multiplying both by sign will only change sign if values are negative
-    */
-    temp_int *= sign;
-    float_to_int_result *= sign;
-    char* int_string = to_stringi(temp_int);
-    char* float_string = to_stringi(float_to_int_result);
-
-    /*
-        If float value, then there is decimal. Increase size for decimal.
-    */
-    if (float_to_int_result > 0) size++;
-    size += leading_zeros;
-
-    char* output_string = new_string(size);
-    int index = 0;
-    
-    //Place appropriate negative value.
-    if(sign < 1){
-        output_string[0] = '-';
-        index++;
-    };
-
-    //Using the index as the proper offest, we can always ensure the '.' gets placed in proper position.
-    if(float_to_int_result){
-        output_string[index + int_digit_count] = '.';
-    }
-
-    //Copy proper values into new string.
-    int count = int_digit_count;
-    int int_index = 0;
-    while(count > 0){
-        output_string[index + int_index] = int_string[int_index];
-        int_index++;
-        count--;
-    }
-    //Update index to track current position in output string
-    index += int_index;
-    
-    count = float_digit_counter;
-    int float_index = 0;
-    if(count > 0){
-        //This is done because we need to skip over the decimal since the int_index stops one before it.
-        index++;
-        while (leading_zeros > 0){
-                output_string[index] = '0';
-                leading_zeros--;
-                index++;
-                count--;
-        }
-        while(count > 0){
-            output_string[index + float_index] = float_string[float_index];
-            float_index++;
-            count--;
-        }
-    }
-    free(int_string);
-    free(float_string);
     return output_string;
 }
 
@@ -197,6 +84,10 @@ void swap_char(char* a, char* b){
 }
 
 int size_of_string(char* a){
+    /*
+        Given a c_string, obtain the size given the string has a null terminator.
+    */
+
     int size = 0;
     while (*a++ != '\0'){
         size++;
@@ -204,17 +95,33 @@ int size_of_string(char* a){
     return size;
 }
 
+
 int leading_zerosf(float input){
+    /*
+        Given a floating point input, return the number of zeros that follow
+        immediately after a decimal up to the first non-zero number. 
+    */
+
+    //Separate integer from float.
+    int temp = input;
+    input -= temp;
+
+    if (input == 0) input += temp;
+
     int count = 0;
-    int temp = 0;
+    temp = 0;
     while(input != 0 && temp == 0 && count < 8){
         temp = (input *= 10);
         count++;
     }
-    return count;
+    return count - 1;
 }
 
+
 int digits_in_integer(int input){
+    /*
+        Count total digits within an integer input.
+    */
     int count = 0;
     while (input != 0){
         count++;
@@ -223,16 +130,23 @@ int digits_in_integer(int input){
     return count;
 }
 
-/*
-    Creates an integer without any leading zeros.
-    Removes trailing zeros.
-    Ensures positive output.
-*/
-int float_to_int(float float_input, int max_zeros){
+
+int decimal_as_integer(float float_input, int max_zeros){
+    /*
+        Creates an integer without any leading zeros.
+        Removes trailing zeros.
+        Ensures positive output.
+    */
+   
+    //Esnure float is positive and removes the integer before the decimal.
     if (float_input < 0) float_input *= -1;
+    int integer_of_float = float_input;
+    float_input = float_input - integer_of_float;
+
     const float epsilon = .00001f;
     int result = 0;
-    while (max_zeros > 0 && float_input > epsilon){
+
+    while (max_zeros > 0 && float_input >= epsilon){
         float_input *= 10;
         int temp_result = float_input;
         result *= 10;
@@ -244,6 +158,7 @@ int float_to_int(float float_input, int max_zeros){
     }
 
     result = remove_trailing_zeros(result);
+    return result;
 }
 
 int remove_trailing_zeros(int input){
@@ -251,4 +166,96 @@ int remove_trailing_zeros(int input){
         input /= 10;
     }
     return input;
+}
+
+int size_of_float(float input){
+
+    /*
+        Get size of output string based on a float input. This is used when 
+        wanting to create an string not when a string is already made.
+    */
+
+    int size = 0;
+    int integer_size = digits_in_integer((int)input);
+    int leading_zeros = leading_zerosf(input);
+    int float_size = digits_in_integer(decimal_as_integer(input, 6)) + leading_zeros;
+    
+    /*
+        These respectively check for negative sign and decimal.
+    */
+    if(input < 0) size++;
+    if(float_size) size++;
+
+    size += integer_size + float_size;
+    return size;
+}
+
+char* create_output_string(float float_value){
+    int size = size_of_float(float_value);
+    char* output_string = new_string(size);
+    fill_output_string(output_string, float_value);
+    return output_string;
+}
+
+void fill_output_string(char* output_string, float float_value){
+
+    /*
+        Obtains necessary data to fill in the output string.
+    */
+    int leading_zeros = leading_zerosf(float_value);
+    int deci_to_integer = decimal_as_integer(float_value, 6);
+
+
+    char* integer_string = pos_to_stringi(float_value);
+    char* float_string = pos_to_stringi(deci_to_integer);
+
+
+    int size = size_of_float(float_value);
+    /*
+        os = output_string
+        is = integer_string
+        fs = float_string
+    */
+    int os_index = 0;
+    int is_index = 0;
+    int fs_index = 0;
+
+    //Place negative char if float is negative. 
+    if (float_value < 0) {
+        output_string[0] = '-';
+        os_index++;
+    }
+
+    fill_string_at(output_string, integer_string, os_index);
+    os_index += digits_in_integer(float_value);
+
+    //Place decimal char if float is negative.
+    if (deci_to_integer){
+        output_string[os_index] = '.';
+        os_index++;
+    }
+
+    while(leading_zeros){
+        output_string[os_index] = '0';
+        leading_zeros--;
+        os_index++;
+    }
+
+    fill_string_at(output_string, float_string, os_index);
+    free(integer_string);
+    free(float_string);
+}
+
+void fill_string_at(char* string_to_fill, char* other_string, int at){
+    int other_index = 0;
+    while(string_to_fill[at] != '\0' && other_string[other_index] != '\0'){
+        string_to_fill[at] = other_string[other_index];
+        other_index++;
+        at++;
+    }
+}
+
+char* pos_to_stringi(int float_input){
+    if (float_input < 0) float_input *= -1;
+    return to_stringi(float_input);
 }
