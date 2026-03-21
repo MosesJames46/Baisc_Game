@@ -92,21 +92,25 @@ char* to_stringf(float input){
     //printf("temp float: %f.\n", temp_float);
     //Used to ensure that no more than n amount of zeros can be within float consecutively
     int max_zeros = 4;
-    int consecutive_zeros = 0;
     //printf("temp float: %f.\n", temp_float);
     //Epsilon to count for smallest value.
     int leading_zeros = leading_zerosf(temp_float) - 1;
     float_digit_counter += leading_zeros;
+    size += leading_zeros;
     float_to_int_result = float_to_int(temp_float, 6);
 
-    //Updated size and counter from outputs.
-    size += digits_in_integer(float_to_int_result);
-    float_digit_counter += float_to_int_result;
+    
+    /*
+        Size increases based of digits in integer.
+    */
+    int num_digits_float = digits_in_integer(float_to_int_result);
+    size += num_digits_float;
+    float_digit_counter += num_digits_float;
 
-    while (float_to_int_result % 10 == 0 && float_to_int_result != 0){
-        float_to_int_result /= 10;
-        size--;
-    }
+    //while (float_to_int_result % 10 == 0 && float_to_int_result != 0){
+    //    float_to_int_result /= 10;
+    //    size--;
+    //}
 
     float_to_int_result *= sign;
     
